@@ -36,7 +36,7 @@ function _queryOrder(sOpenId, fnCallback) {
 
     db = new sqlite3.Database('songdami.db');
     db.serialize(function () {
-        db.each("SELECT item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' ORDER BY deliverDate ASC",
+        db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' ORDER BY deliverDate ASC",
             function (err, row) {
                 aOrders.push(row);
             },
