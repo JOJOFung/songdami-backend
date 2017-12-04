@@ -6,7 +6,7 @@ var db = require('../db/db.js');
 router
     .get('/', function (req, res, next) {
         var query = req.query;
-        var sCode = query.code;//TODO: code is not set
+        var sCode = query.code;
         db.getOrders(sCode, function(aOrders){
             res.send(aOrders);
         });
