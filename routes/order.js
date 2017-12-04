@@ -7,7 +7,7 @@ router
     .get('/', function (req, res, next) {
         var query = req.query;
         var sCode = query.code;
-        db.getOrders(sCode, function(aOrders){
+        db.getOrders(sCode, function (aOrders) {
             res.send(aOrders);
         });
     })
@@ -26,6 +26,14 @@ router
         db.save2DB(oOrder);
         res.status(200);
         res.send('OK');
+    })
+    .delete('/', function (req, res, next) {
+        var body = req.body;
+        var id = body.id;
+        var code = body.code;
+        db.deleteOrder(id, code, function (aOrders) {
+            res.send(aOrders);
+        });
     });
 
 module.exports = router;

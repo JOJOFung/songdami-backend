@@ -11,6 +11,10 @@ function getOrders(sCode, fnCallback) {
     wx.getOpenId(sCode, _queryOrder, fnCallback);
 }
 
+function deleteOrder(iId, sCode, fnCallback) {
+    _deleteOrder(iId, sCode, fnCallback);
+}
+
 function _insertOrder(sOpenId, oOrder) {
     db.serialize(function () {
         db.run("INSERT INTO itemorder VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -35,14 +39,23 @@ function _queryOrder(sOpenId, fnCallback) {
     var aOrders = [];
 
     db = new sqlite3.Database('songdami.db');
-    db.serialize(function () {
-        db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' ORDER BY deliverDate ASC",
-            function (err, row) {
-                aOrders.push(row);
-            },
-            function () {
-                typeof fnCallback == "function" && fnCallback(aOrders);
-            });
+
+    db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' ORDER BY deliverDate ASC",
+        function (err, row) {
+            aOrders.push(row);
+        },
+        function () {
+            typeof fnCallback == "function" && fnCallback(aOrders);
+        });
+
+    db.close();
+}
+
+function _deleteOrder(iId, sCode, fnCallback) {
+    db = new sqlite3.Database('songdami.db');
+
+    db.run("DELETE FROM itemorder WHERE rowid =" + iId + " AND deliverDate > date('now')", function (error) {
+        getOrders(sCode, fnCallback);
     });
 
     db.close();
@@ -55,5 +68,6 @@ function _getOrderTable() {
 
 module.exports = {
     save2DB: save2DB,
-    getOrders: getOrders
+    getOrders: getOrders,
+    deleteOrder: deleteOrder
 };
