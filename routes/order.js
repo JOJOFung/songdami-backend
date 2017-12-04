@@ -5,6 +5,8 @@ var db = require('../db/db.js');
 /* TODO */
 router
     .get('/', function (req, res, next) {
+        var aTelephones = req.body.telephones;
+        db.getOrders(aTelephones);
         res.send('respond with a resource');
     })
     /* Persist a new order */
@@ -19,8 +21,9 @@ router
         * }
         * */
         var oOrder = req.body;
-        db._save2DB(oOrder);
+        db.save2DB(oOrder);
         res.status(200);
+        res.send('OK');
     });
 
 module.exports = router;
