@@ -5,9 +5,11 @@ var db = require('../db/db.js');
 /* TODO */
 router
     .get('/', function (req, res, next) {
-        var aTelephones = req.body.telephones;
-        db.getOrders(aTelephones);
-        res.send('respond with a resource');
+        var query = req.query;
+        var sCode = query.code;//TODO: code is not set
+        db.getOrders(sCode, function(aOrders){
+            res.send(aOrders);
+        });
     })
     /* Persist a new order */
     .post('/', function (req, res) {
