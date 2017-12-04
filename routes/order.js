@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../db/db.js');
 
 /* TODO */
 router
@@ -18,7 +19,8 @@ router
         * }
         * */
         var oOrder = req.body;
-        res.send('POST request recieved.')
+        db._save2DB(oOrder);
+        res.status(200);
     });
 
 module.exports = router;
