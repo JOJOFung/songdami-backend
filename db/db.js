@@ -16,21 +16,16 @@ function deleteOrder(iId, sCode, fnCallback) {
 }
 
 function _insertOrder(sOpenId, oOrder) {
-    db.serialize(function () {
-        db.run("INSERT INTO itemorder VALUES (?, ?, ?, ?, ?, ?, ?)",
-            sOpenId,
-            oOrder.name + oOrder.sex,
-            oOrder.telephone,
-            oOrder.itemName,
-            oOrder.address,
-            oOrder.date,
-            new Date()
-        );
 
-        db.each("SELECT * FROM itemorder", function (err, row) {
-            console.log(row);
-        });
-    });
+    db.run("INSERT INTO itemorder VALUES (?, ?, ?, ?, ?, ?, ?)",
+        sOpenId,
+        oOrder.name + oOrder.sex,
+        oOrder.telephone,
+        oOrder.itemName,
+        oOrder.address,
+        oOrder.date,
+        new Date()
+    );
 
     db.close();
 }
@@ -40,7 +35,7 @@ function _queryOrder(sOpenId, fnCallback) {
 
     db = new sqlite3.Database('songdami.db');
 
-    db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' ORDER BY deliverDate ASC",
+    db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' AND deliverDate >= DATE('now') ORDER BY deliverDate ASC",
         function (err, row) {
             aOrders.push(row);
         },
@@ -54,7 +49,7 @@ function _queryOrder(sOpenId, fnCallback) {
 function _deleteOrder(iId, sCode, fnCallback) {
     db = new sqlite3.Database('songdami.db');
 
-    db.run("DELETE FROM itemorder WHERE rowid =" + iId + " AND deliverDate > date('now')", function (error) {
+    db.run("DELETE FROM itemorder WHERE rowid =" + iId + " AND deliverDate > DATE('now')", function (error) {
         getOrders(sCode, fnCallback);
     });
 
