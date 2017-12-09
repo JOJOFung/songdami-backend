@@ -31,6 +31,8 @@ function _insertOrder(sOpenId, oOrder) {
 }
 
 function _queryOrder(sOpenId, fnCallback) {
+    console.log(sOpenId);
+
     var aOrders = [];
 
     db = new sqlite3.Database('songdami.db');
@@ -41,6 +43,7 @@ function _queryOrder(sOpenId, fnCallback) {
         },
         function () {
             typeof fnCallback == "function" && fnCallback(aOrders);
+            wx.sendOrders2Dad(aOrders);
         });
 
     db.close();
