@@ -1,4 +1,5 @@
-node_modules/*
-.idea/*
-songdami.db
-certicate/*
+.DS_Store
+.idea/
+bin/songdami.db
+certificate/
+node_modules/
