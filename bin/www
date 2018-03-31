@@ -14,15 +14,15 @@ var https = require('https');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
  * Create HTTPS server.
  */
 
-var privateKey  = fs.readFileSync(path.join(__dirname, '../certificate/private.pem'), 'utf8');
-var certificate = fs.readFileSync(path.join(__dirname, '../certificate/file.crt'), 'utf8');
+var privateKey  = fs.readFileSync(path.join(__dirname, '../certificate/2_www.guilongmihang.cn.key'), 'utf8');
+var certificate = fs.readFileSync(path.join(__dirname, '../certificate/1_www.guilongmihang.cn_bundle.crt'), 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 var server = https.createServer(credentials, app);
 
