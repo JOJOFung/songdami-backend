@@ -3,3 +3,4 @@
 bin/songdami.db
 certificate/
 node_modules/
+npm-debug.log
