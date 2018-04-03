@@ -10,6 +10,9 @@ var fs = require('fs');
 var path = require('path');
 var https = require('https');
 
+var reminder = require('../reminder/reminder.js');
+reminder.startSend2DadJob();
+
 /**
  * Get port from environment and store in Express.
  */

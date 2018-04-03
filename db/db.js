@@ -11,6 +11,10 @@ function getOrders(sCode, fnCallback) {
     wx.getOpenId(sCode, _queryOrder, fnCallback);
 }
 
+function getPendingOrdersOfTomorrow(){
+   return _getPendingOrdersOfTomorrow();
+}
+
 function deleteOrder(iId, sCode, fnCallback) {
     _deleteOrder(iId, sCode, fnCallback);
 }
@@ -40,13 +44,28 @@ function _queryOrder(sOpenId, fnCallback) {
     db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' AND deliverDate >= DATE('now') ORDER BY deliverDate ASC",
         function (err, row) {
             aOrders.push(row);
-        },
+        }/*,
         function () {
             typeof fnCallback == "function" && fnCallback(aOrders);
             wx.sendOrders2Dad(aOrders);
+        }*/);
+
+    db.close();
+}
+
+function _getPendingOrdersOfTomorrow(){
+    var aOrders = [];
+
+    db = new sqlite3.Database('songdami.db');
+
+    db.each("SELECT rowid AS id, name AS name, telephone AS telephone, item AS item, address AS address FROM itemorder WHERE deliverDate = DATE('now','+1 day') ORDER BY id ASC",
+        function (err, row) {
+            aOrders.push(row);
         });
 
     db.close();
+
+    return aOrders;
 }
 
 function _deleteOrder(iId, sCode, fnCallback) {
@@ -67,5 +86,6 @@ function _getOrderTable() {
 module.exports = {
     save2DB: save2DB,
     getOrders: getOrders,
-    deleteOrder: deleteOrder
+    deleteOrder: deleteOrder,
+    getPendingOrdersOfTomorrow: getPendingOrdersOfTomorrow
 };
