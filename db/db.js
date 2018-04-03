@@ -34,7 +34,7 @@ function _insertOrder(sOpenId, oOrder) {
     db.close();
 }
 
-function _queryOrder(sOpenId, fnCallback) {
+function _queryOrder(sOpenId) {
     console.log(sOpenId);
 
     var aOrders = [];
@@ -44,11 +44,7 @@ function _queryOrder(sOpenId, fnCallback) {
     db.each("SELECT rowid AS id, item AS name, deliverDate AS date FROM itemorder WHERE openId = '" + sOpenId + "' AND deliverDate >= DATE('now') ORDER BY deliverDate ASC",
         function (err, row) {
             aOrders.push(row);
-        }/*,
-        function () {
-            typeof fnCallback == "function" && fnCallback(aOrders);
-            wx.sendOrders2Dad(aOrders);
-        }*/);
+        });
 
     db.close();
 }
