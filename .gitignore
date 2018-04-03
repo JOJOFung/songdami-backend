@@ -1,6 +1,8 @@
 .DS_Store
-.idea/
 bin/songdami.db
 certificate/
-node_modules/
 npm-debug.log
+node_modules/*
+.idea/*
+songdami.db
+nohup.out
