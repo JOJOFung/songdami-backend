@@ -8,7 +8,9 @@ wx.sendOrders2Dad(orders);
 };
 
 //If scheduled time is changed, should change getPendingOrdersOfTomorrow accordingly
-var send2DadJob = schedule.scheduleJob('* 21 * * *', sendPendingOrders);
+var send2DadJob = function(){
+    schedule.scheduleJob('* 21 * * *', sendPendingOrders);
+};
 
 module.exports = {
     startSend2DadJob: send2DadJob
